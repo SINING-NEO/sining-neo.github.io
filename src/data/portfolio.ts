@@ -233,6 +233,30 @@ export const featured: Project[] = [
   },
 ];
 
+export const ai = {
+  statement: "AI is part of how I design, build, and ship — not just a feature I add.",
+  shipped: [
+    { name: "Google Gemini", use: "Generates replies in my Telegram auto-reply service, with model fallback and logging.", project: "Telegram Assistants" },
+    { name: "Perplexity API", use: "Writes scripts, hooks, and captions for each Short in the content pipeline.", project: "AI Shorts Pipeline" },
+    { name: "Cursor SDK", use: "Runs one persistent agent per Telegram chat, so follow-ups continue the same conversation.", project: "Telegram Assistants" },
+    { name: "MCP", use: "Optional tool servers that give the bot's agents extra capabilities.", project: "Telegram Assistants" },
+  ],
+  workflow: [
+    { step: "Plan", body: "Talk through the problem and the user flow with an agent before writing code." },
+    { step: "Pair-program", body: "Build with Cursor as a partner — it was my pair programmer for Air Draw 3D's gestures and UX." },
+    { step: "Review", body: "Read every diff, test it in real browsers, and push back when the output is wrong." },
+    { step: "Ship", body: "This portfolio was rebuilt from my GitHub record with a Cursor agent, then reviewed and published by me." },
+  ],
+  models: [
+    { provider: "Anthropic", names: ["Claude Opus 5.5", "Claude Opus 5", "Claude Opus 4.8", "Claude Sonnet 5.5", "Claude Fable 5.1", "Claude Fable 5"] },
+    { provider: "OpenAI", names: ["GPT-5.6 Sol", "GPT-5.5"] },
+    { provider: "Google", names: ["Gemini 3.8 Flash"] },
+    { provider: "xAI", names: ["Grok 4.6"] },
+    { provider: "Meta", names: ["Muse Spark 1.3"] },
+  ],
+  modelsNote: "The models I switch between in Cursor — matched to the task, from quick edits to deep debugging and design reviews.",
+};
+
 export const resumeSummary =
   "Aspiring UI/UX designer and front-end developer who designs by building working prototypes. Shipped a hand-tracking 3D drawing app, a conversational insurance prototype, and offline-first clinical screening stations for a team event-operations platform. Comfortable from interface design through React, TypeScript, Node.js, and PostgreSQL.";
 
@@ -266,7 +290,8 @@ export const resumeSkills: { label: string; items: string }[] = [
   { label: "Design", items: "Interaction design, conversational flows, form design, responsive UI, accessibility, case studies" },
   { label: "Front-end", items: "React, TypeScript, JavaScript, Next.js, Vite, Tailwind CSS, Three.js, React Three Fiber, MediaPipe, PWA" },
   { label: "Back-end", items: "Node.js, Express, PostgreSQL, PL/pgSQL, Prisma, Redis, BullMQ, Zod, OpenAPI, Docker Compose" },
-  { label: "AI & tooling", items: "Cursor SDK, MCP, Gemini, Perplexity API, Git, GitHub, CI, Vercel, OWASP Top 10" },
+  { label: "AI", items: "Cursor agents & Cursor SDK, MCP, Gemini API, Perplexity API; building with Claude, GPT, Gemini, Grok, and Muse Spark models" },
+  { label: "Tooling", items: "Git, GitHub, CI, Vercel, GitHub Pages, OWASP Top 10" },
 ];
 
 export type SideProject = {

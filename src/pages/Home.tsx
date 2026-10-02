@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   about,
+  ai,
   award,
   education,
   featured,
@@ -34,6 +35,7 @@ export default function Home() {
         ))}
         <MoreWork />
         <Skills />
+        <AiSection />
         <Contact />
       </main>
       <Footer />
@@ -54,6 +56,7 @@ function Header() {
     { href: "#work", label: "work", always: true },
     { href: "#about", label: "about" },
     { href: "#skills", label: "skills" },
+    { href: "#ai", label: "ai" },
     { href: "#contact", label: "contact" },
   ];
 
@@ -460,6 +463,80 @@ function Skills() {
             </Reveal>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+function AiSection() {
+  const modelCount = ai.models.reduce((n, g) => n + g.names.length, 0);
+
+  return (
+    <section id="ai" aria-label="AI" className={cx("border-t border-line py-20 lg:py-28", pad)}>
+      <div className="grid gap-10 lg:grid-cols-12">
+        <div className="lg:col-span-4">
+          <Label>ai</Label>
+          <p className="mt-3 max-w-xs text-[13px] leading-relaxed text-muted">
+            Where AI runs inside my projects, how I build with it, and the models I work with.
+          </p>
+        </div>
+        <Reveal className="lg:col-span-8">
+          <p className="display max-w-[22ch] text-[clamp(1.75rem,3vw,2.75rem)] leading-[1.04] font-bold tracking-[-0.025em]">
+            {ai.statement}
+          </p>
+        </Reveal>
+      </div>
+
+      <div className="mt-16 grid gap-10 lg:grid-cols-12">
+        <Reveal className="lg:col-span-4">
+          <h3 className="border-b border-line pb-2 text-[13px] font-bold lowercase">shipped in my projects</h3>
+          <ul>
+            {ai.shipped.map((s) => (
+              <li key={s.name} className="border-b border-line py-3">
+                <p className="text-[13px] font-bold">{s.name}</p>
+                <p className="mt-0.5 text-[13px] leading-relaxed text-muted">{s.use}</p>
+                <p className="mt-1 text-[11px] font-medium text-muted uppercase">{s.project}</p>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+
+        <Reveal delay={80} className="lg:col-span-4">
+          <h3 className="border-b border-line pb-2 text-[13px] font-bold lowercase">building with ai</h3>
+          <ol>
+            {ai.workflow.map((w, i) => (
+              <li key={w.step} className="grid grid-cols-[2.5rem_1fr] border-b border-line py-3">
+                <span className="display text-xl">{num(i)}</span>
+                <span>
+                  <span className="block text-[13px] font-bold">{w.step}</span>
+                  <span className="mt-0.5 block text-[13px] leading-relaxed text-muted">{w.body}</span>
+                </span>
+              </li>
+            ))}
+          </ol>
+        </Reveal>
+
+        <Reveal delay={160} className="lg:col-span-4">
+          <h3 className="flex items-baseline justify-between border-b border-line pb-2 text-[13px] font-bold lowercase">
+            models in my toolkit
+            <span className="display text-xl">{modelCount}</span>
+          </h3>
+          <div className="space-y-4 pt-3">
+            {ai.models.map((g) => (
+              <div key={g.provider}>
+                <p className="text-[11px] font-medium text-muted uppercase">{g.provider}</p>
+                <ul className="mt-1.5 flex flex-wrap gap-1.5">
+                  {g.names.map((n) => (
+                    <li key={n} className="border border-line px-2 py-1 text-[12px] font-semibold transition-colors hover:bg-fg hover:text-bg">
+                      {n}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <p className="mt-5 text-[12px] leading-relaxed text-muted">{ai.modelsNote}</p>
+        </Reveal>
       </div>
     </section>
   );
