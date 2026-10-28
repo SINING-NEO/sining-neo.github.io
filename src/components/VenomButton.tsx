@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 const SEGMENTS = 16;
-const ARMS = 24;
-const DRIPS = 4;
+const ARMS = 30;
 const MEMBRANE = 120;
 const REACH = 340;
 const BREAK = 480;
@@ -17,7 +16,7 @@ const TAU = Math.PI * 2;
 const DESKTOP_QUERY = "(hover: hover) and (pointer: fine) and (min-width: 768px) and (prefers-reduced-motion: no-preference)";
 
 type Pt = { x: number; y: number; px: number; py: number };
-type Kind = "arm" | "fiber" | "drip";
+type Kind = "arm" | "fiber";
 
 type Tendril = {
   kind: Kind;
@@ -42,7 +41,6 @@ type Shape = {
   pts: Pt[];
   widths: number[];
   lit: [number, number][];
-  tip: { x: number; y: number; r: number };
   thin: number;
   kind: Kind;
   phase: number;
@@ -89,13 +87,6 @@ function perimeterPoint(b: Box, u: number) {
   return corner(l + r, t + r, Math.PI);
 }
 
-function bottomU(b: Box, f: number) {
-  const sw = b.w - 2 * b.r;
-  const sh = b.h - 2 * b.r;
-  const arc = (Math.PI * b.r) / 2;
-  return (sw + arc + sh + arc + f * sw) / (2 * sw + 2 * sh + 4 * arc);
-}
-
 function sampleOffset(off: Float32Array, u: number) {
   const x = wrap(u) * MEMBRANE;
   const i = Math.floor(x);
@@ -105,7 +96,6 @@ function sampleOffset(off: Float32Array, u: number) {
 
 function makeTendril(kind: Kind, t: number): Tendril {
   const fiber = kind === "fiber";
-  const drip = kind === "drip";
   return {
     kind,
     t,
@@ -116,9 +106,9 @@ function makeTendril(kind: Kind, t: number): Tendril {
     ox: 0,
     oy: 0,
     phase: Math.random() * TAU,
-    root: fiber ? 2.2 + Math.random() * 1.6 : drip ? 5 + Math.random() * 3 : 7 + Math.random() * 5,
+    root: fiber ? 2.2 + Math.random() * 1.6 : 7 + Math.random() * 5,
     reach: fiber ? 0.9 + Math.random() * 0.35 : 0.6 + Math.random() * 0.35,
-    idle: drip ? 1.1 + Math.random() * 0.5 : IDLE_SEG * (0.5 + Math.random() * 0.9),
+    idle: IDLE_SEG * (0.5 + Math.random() * 0.9),
     tension: 0,
   };
 }
@@ -186,12 +176,7 @@ function shapeTendril(td: Tendril, thin: number): Shape {
     const k = i / (n - 1);
     // Uneven thickness along the length, so the tendrils read as flesh rather than tubes.
     const lump = 1 + 0.16 * Math.sin(k * 11 + phase * 3) * Math.sin(k * 4.3 + phase) * (1 - k * 0.6);
-    const w =
-      (kind === "drip"
-        ? root * Math.pow(1 - k, 0.5) * 0.7 + 1.4
-        : root * Math.pow(1 - k, 0.85) + (kind === "fiber" ? 0.5 : 0.9)) *
-      thin *
-      lump;
+    const w = (root * Math.pow(1 - k, 0.85) + (kind === "fiber" ? 0.25 : 0.45)) * thin * lump;
     widths.push(w);
     left.push([pts[i].x - ty * w * 0.5, pts[i].y + tx * w * 0.5]);
     right.push([pts[i].x + ty * w * 0.5, pts[i].y - tx * w * 0.5]);
@@ -210,6 +195,12 @@ function shapeTendril(td: Tendril, thin: number): Shape {
     path.quadraticCurveTo(left[i][0], left[i][1], (left[i][0] + left[i + 1][0]) / 2, (left[i][1] + left[i + 1][1]) / 2);
   }
   path.lineTo(left[n - 1][0], left[n - 1][1]);
+  // Pointed tip, extended slightly past the last point along the tendril's direction.
+  const end = pts[n - 1];
+  const prev = pts[n - 2];
+  const el = Math.hypot(end.x - prev.x, end.y - prev.y) || 1;
+  const ext = 2 + widths[n - 1] * 2;
+  path.lineTo(end.x + ((end.x - prev.x) / el) * ext, end.y + ((end.y - prev.y) / el) * ext);
   path.lineTo(right[n - 1][0], right[n - 1][1]);
   for (let i = n - 2; i > 0; i--) {
     path.quadraticCurveTo(right[i][0], right[i][1], (right[i][0] + right[i - 1][0]) / 2, (right[i][1] + right[i - 1][1]) / 2);
@@ -217,9 +208,7 @@ function shapeTendril(td: Tendril, thin: number): Shape {
   path.lineTo(right[0][0], right[0][1]);
   path.closePath();
 
-  const end = pts[n - 1];
-  const tipR = kind === "drip" ? root * 0.55 * thin : widths[n - 1] * 0.6;
-  return { path, pts, widths, lit, tip: { x: end.x, y: end.y, r: tipR }, thin, kind, phase };
+  return { path, pts, widths, lit, thin, kind, phase };
 }
 
 function glossTendril(ctx: CanvasRenderingContext2D, s: Shape, time: number, rim: number) {
@@ -248,12 +237,6 @@ function glossTendril(ctx: CanvasRenderingContext2D, s: Shape, time: number, rim
       ctx.stroke();
     }
   }
-  if (s.kind === "drip") {
-    ctx.fillStyle = "rgba(255,255,255,0.28)";
-    ctx.beginPath();
-    ctx.arc(s.tip.x - s.tip.r * 0.3, s.tip.y - s.tip.r * 0.4, s.tip.r * 0.16, 0, TAU);
-    ctx.fill();
-  }
 }
 
 export function VenomButton({
@@ -279,10 +262,6 @@ export function VenomButton({
     const arms = Array.from({ length: ARMS }, (_, i) =>
       makeTendril(i % 3 === 1 ? "fiber" : "arm", (i + Math.random() * 0.7) / ARMS),
     );
-    const drips = Array.from({ length: DRIPS }, (_, i) =>
-      makeTendril("drip", 0.12 + ((i + 0.2 + Math.random() * 0.6) / DRIPS) * 0.76),
-    );
-    const all = [...arms, ...drips];
     const skinTex = makeSkin();
     const skin = skinTex ? ctx.createPattern(skinTex, "repeat") : null;
     const off = new Float32Array(MEMBRANE);
@@ -397,11 +376,9 @@ export function VenomButton({
       blob.closePath();
 
       const shapes: Shape[] = [];
-      for (const td of all) {
-        const drip = td.kind === "drip";
-        const u = drip ? bottomU(box, td.t) : td.t;
-        const e = perimeterPoint(box, u);
-        const o = sampleOffset(off, u);
+      for (const td of arms) {
+        const e = perimeterPoint(box, td.t);
+        const o = sampleOffset(off, td.t);
         const ax = e.x + e.nx * (o - INSET);
         const ay = e.y + e.ny * (o - INSET);
         const dx = mouse.x - ax;
@@ -410,32 +387,24 @@ export function VenomButton({
         const facing = (dx * e.nx + dy * e.ny) / d;
         const reach = REACH * td.reach;
 
-        if (!drip) {
-          if (td.cooldown > 0) td.cooldown--;
-          if (lunge && !td.attached && d < BREAK * 0.9 && facing > -0.35) {
-            td.cooldown = 0;
-            grab(td);
-          }
-          if (!td.attached && mouse.active && td.cooldown === 0 && d < reach && facing > -0.1) grab(td);
-          // Arms also let go once the cursor swings behind them, instead of dragging across the body.
-          if (td.attached && (!mouse.active || d > BREAK * (0.85 + td.reach * 0.15) || facing < -0.45)) {
-            td.attached = false;
-            td.cooldown = 45 + Math.floor(Math.random() * 70);
-            const tip = td.pts[SEGMENTS];
-            tip.px = tip.x + (dx / d) * 14;
-            tip.py = tip.y + (dy / d) * 14;
-          }
+        if (td.cooldown > 0) td.cooldown--;
+        if (lunge && !td.attached && d < BREAK * 0.9 && facing > -0.35) {
+          td.cooldown = 0;
+          grab(td);
+        }
+        if (!td.attached && mouse.active && td.cooldown === 0 && d < reach && facing > -0.1) grab(td);
+        // Arms also let go once the cursor swings behind them, instead of dragging across the body.
+        if (td.attached && (!mouse.active || d > BREAK * (0.85 + td.reach * 0.15) || facing < -0.45)) {
+          td.attached = false;
+          td.cooldown = 45 + Math.floor(Math.random() * 70);
+          const tip = td.pts[SEGMENTS];
+          tip.px = tip.x + (dx / d) * 14;
+          tip.py = tip.y + (dy / d) * 14;
         }
 
-        const sensing = !drip && !td.attached && mouse.active && d < reach * 1.8 && facing > 0.1;
+        const sensing = !td.attached && mouse.active && d < reach * 1.8 && facing > 0.1;
         const maxSeg = td.kind === "fiber" ? MAX_SEG * 1.2 : MAX_SEG;
-        const target = drip
-          ? td.idle * (1 + 0.6 * (0.5 + 0.5 * Math.sin(time * 0.0006 + td.phase)))
-          : td.attached
-            ? Math.min((d / SEGMENTS) * 1.12, maxSeg)
-            : sensing
-              ? SENSE_SEG
-              : td.idle;
+        const target = td.attached ? Math.min((d / SEGMENTS) * 1.12, maxSeg) : sensing ? SENSE_SEG : td.idle;
         td.seg += (target - td.seg) * (td.attached ? 0.14 : 0.07);
 
         const pts = td.pts;
@@ -453,10 +422,10 @@ export function VenomButton({
           const vy = (p.y - p.py) * 0.93;
           p.px = p.x;
           p.py = p.y;
-          const wave = Math.sin(time * 0.004 + i * 0.55 + td.phase) * (drip ? 0.08 : 0.28) * k;
-          const push = (drip ? 0.15 : 0.45) * (1 - k) * (1 - k);
+          const wave = Math.sin(time * 0.004 + i * 0.55 + td.phase) * 0.28 * k;
+          const push = 0.45 * (1 - k) * (1 - k);
           let fx = e.nx * push - e.ny * wave;
-          let fy = e.ny * push + e.nx * wave + (drip ? 0.32 : 0.09) * k;
+          let fy = e.ny * push + e.nx * wave + 0.09 * k;
           if (sensing) {
             fx += (dx / d) * 0.25 * k;
             fy += (dy / d) * 0.25 * k;
@@ -514,12 +483,7 @@ export function VenomButton({
       skin?.setTransform(new DOMMatrix().translate(box.l, box.t));
       ctx.fillStyle = skin ?? BODY;
       ctx.fill(blob);
-      for (const s of shapes) {
-        ctx.fill(s.path);
-        ctx.beginPath();
-        ctx.arc(s.tip.x, s.tip.y, s.tip.r, 0, TAU);
-        ctx.fill();
-      }
+      for (const s of shapes) ctx.fill(s.path);
 
       // Body shading: a soft top reflection that slides with the cursor, darker underside,
       // and a broken wet highlight along the top edge.
