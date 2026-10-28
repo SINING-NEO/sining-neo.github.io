@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 const SEGMENTS = 16;
 const COUNT = 20;
@@ -54,11 +54,27 @@ function makeTendril(i: number): Tendril {
   };
 }
 
-function drawTendril(ctx: CanvasRenderingContext2D, pts: Pt[], root: number, thin: number, gloss: string) {
+const BODY = "#050505";
+const DESKTOP_QUERY = "(hover: hover) and (pointer: fine) and (min-width: 768px) and (prefers-reduced-motion: no-preference)";
+
+function useDesktopPointer() {
+  const [match, setMatch] = useState(() => window.matchMedia(DESKTOP_QUERY).matches);
+  useEffect(() => {
+    const mq = window.matchMedia(DESKTOP_QUERY);
+    const update = () => setMatch(mq.matches);
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+  return match;
+}
+
+function drawTendril(ctx: CanvasRenderingContext2D, pts: Pt[], root: number, thin: number, rim: boolean) {
   const n = pts.length;
   const left: [number, number][] = [];
   const right: [number, number][] = [];
   const widths: number[] = [];
+  // Unit normal pointing toward the light (up), so the sheen stays on the top side as tendrils twist.
+  const lit: [number, number][] = [];
 
   for (let i = 0; i < n; i++) {
     const a = pts[Math.max(0, i - 1)];
@@ -72,8 +88,16 @@ function drawTendril(ctx: CanvasRenderingContext2D, pts: Pt[], root: number, thi
     widths.push(w);
     left.push([pts[i].x - ty * w * 0.5, pts[i].y + tx * w * 0.5]);
     right.push([pts[i].x + ty * w * 0.5, pts[i].y - tx * w * 0.5]);
+    let nx = -ty;
+    let ny = tx;
+    if (ny > 0 || (ny === 0 && nx > 0)) {
+      nx = -nx;
+      ny = -ny;
+    }
+    lit.push([nx, ny]);
   }
 
+  ctx.fillStyle = BODY;
   ctx.beginPath();
   ctx.moveTo(left[0][0], left[0][1]);
   for (let i = 1; i < n - 1; i++) {
@@ -91,26 +115,37 @@ function drawTendril(ctx: CanvasRenderingContext2D, pts: Pt[], root: number, thi
   ctx.lineTo(right[0][0], right[0][1]);
   ctx.closePath();
   ctx.fill();
+  if (rim) {
+    ctx.strokeStyle = "rgba(255,255,255,0.13)";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
 
   const tip = pts[n - 1];
   ctx.beginPath();
   ctx.arc(tip.x, tip.y, widths[n - 1] * 0.6, 0, Math.PI * 2);
   ctx.fill();
 
-  // Thin specular line along one side gives the "wet" symbiote sheen.
-  const fill = ctx.fillStyle;
-  ctx.strokeStyle = gloss;
-  ctx.lineWidth = Math.max(0.6, root * 0.14 * thin);
+  // Two-layer sheen: a broad soft reflection plus a sharp wet specular streak, both fading to the tip.
   ctx.lineCap = "round";
-  ctx.beginPath();
-  for (let i = 1; i < n - 2; i++) {
-    const x = (left[i][0] * 0.7 + pts[i].x * 0.3);
-    const y = (left[i][1] * 0.7 + pts[i].y * 0.3);
-    if (i === 1) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
+  for (const [offset, width, alpha] of [
+    [0.18, 0.5, 0.1],
+    [0.26, 0.16, 0.75],
+  ] as const) {
+    for (let i = 1; i < n - 2; i++) {
+      const k = i / (n - 1);
+      const fade = Math.sin(Math.min(1, k * 1.6) * Math.PI) * (0.35 + thin * 0.65);
+      if (fade <= 0.02) continue;
+      const p = pts[i];
+      const q = pts[i + 1];
+      ctx.strokeStyle = `rgba(255,255,255,${(alpha * fade).toFixed(3)})`;
+      ctx.lineWidth = Math.max(0.5, widths[i] * width);
+      ctx.beginPath();
+      ctx.moveTo(p.x + lit[i][0] * widths[i] * offset, p.y + lit[i][1] * widths[i] * offset);
+      ctx.lineTo(q.x + lit[i + 1][0] * widths[i + 1] * offset, q.y + lit[i + 1][1] * widths[i + 1] * offset);
+      ctx.stroke();
+    }
   }
-  ctx.stroke();
-  ctx.fillStyle = fill;
 }
 
 export function VenomButton({
@@ -124,29 +159,25 @@ export function VenomButton({
 }) {
   const btnRef = useRef<HTMLAnchorElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const enabled = useDesktopPointer();
 
   useEffect(() => {
     const btn = btnRef.current;
     const canvas = canvasRef.current;
-    if (!btn || !canvas) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!enabled || !btn || !canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     const tendrils = Array.from({ length: COUNT }, (_, i) => makeTendril(i));
     const mouse = { x: -1e4, y: -1e4, active: false };
     const shift = { x: 0, y: 0 };
-    let fg = "#000";
-    let gloss = "rgba(255,255,255,0.25)";
+    let dark = true;
     let raf = 0;
     let frame = 0;
     let visible = false;
 
-    const readColors = () => {
-      const css = getComputedStyle(document.documentElement);
-      fg = css.getPropertyValue("--fg").trim() || "#000";
-      const dark = document.documentElement.classList.contains("dark");
-      gloss = dark ? "rgba(0,0,0,0.35)" : "rgba(255,255,255,0.28)";
+    const readTheme = () => {
+      dark = document.documentElement.classList.contains("dark");
     };
 
     const resize = () => {
@@ -167,7 +198,7 @@ export function VenomButton({
 
     const step = (time: number) => {
       frame++;
-      if (frame % 30 === 1) readColors();
+      if (frame % 30 === 1) readTheme();
 
       const raw = btn.getBoundingClientRect();
       const rect = { left: raw.left - shift.x, top: raw.top - shift.y, width: raw.width, height: raw.height };
@@ -184,8 +215,6 @@ export function VenomButton({
       const by = rect.top + shift.y;
 
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-      ctx.fillStyle = fg;
-      let attachedCount = 0;
 
       for (const td of tendrils) {
         const e = edgePoint({ ...rect, left: bx, top: by }, td.t);
@@ -247,7 +276,6 @@ export function VenomButton({
           const tip = pts[SEGMENTS];
           tip.x += (mouse.x + td.ox - tip.x) * 0.45;
           tip.y += (mouse.y + td.oy - tip.y) * 0.45;
-          attachedCount++;
         }
 
         for (let it = 0; it < ITERATIONS; it++) {
@@ -274,11 +302,11 @@ export function VenomButton({
         let length = 0;
         for (let i = 0; i < SEGMENTS; i++) length += Math.hypot(pts[i + 1].x - pts[i].x, pts[i + 1].y - pts[i].y);
         const thin = Math.max(0.55, Math.min(1, Math.sqrt(90 / Math.max(90, length))));
-        drawTendril(ctx, pts, td.root, thin, gloss);
+        drawTendril(ctx, pts, td.root, thin, dark);
       }
 
       // Sticky webbing between neighbouring attached tendrils.
-      ctx.strokeStyle = fg;
+      ctx.strokeStyle = dark ? "rgba(255,255,255,0.22)" : BODY;
       ctx.lineCap = "round";
       const held = tendrils.filter((td) => td.attached);
       for (let i = 0; i < held.length - 1; i++) {
@@ -300,12 +328,6 @@ export function VenomButton({
       }
       ctx.globalAlpha = 1;
 
-      if (attachedCount > 0) {
-        ctx.beginPath();
-        ctx.arc(mouse.x, mouse.y, 2.5 + Math.min(attachedCount, 14) * 0.45, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
       raf = visible ? requestAnimationFrame(step) : 0;
     };
 
@@ -313,7 +335,7 @@ export function VenomButton({
       ([entry]) => {
         visible = entry.isIntersecting;
         if (visible && !raf) {
-          readColors();
+          readTheme();
           raf = requestAnimationFrame(step);
         } else if (!visible) {
           ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
@@ -338,11 +360,13 @@ export function VenomButton({
       window.removeEventListener("blur", onLeave);
       btn.style.transform = "";
     };
-  }, []);
+  }, [enabled]);
 
   return (
     <>
-      <canvas ref={canvasRef} aria-hidden className="pointer-events-none fixed inset-0 z-30 h-full w-full" />
+      {enabled && (
+        <canvas ref={canvasRef} aria-hidden className="pointer-events-none fixed inset-0 z-30 h-full w-full" />
+      )}
       <a ref={btnRef} href={href} className={className} style={{ position: "relative", zIndex: 31 }}>
         {children}
       </a>

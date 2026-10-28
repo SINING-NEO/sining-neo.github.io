@@ -565,7 +565,7 @@ function Contact() {
         <div className="lg:col-span-8">
           <VenomButton
             href={`mailto:${profile.email}`}
-            className="display inline-flex items-center gap-4 bg-fg px-6 py-5 text-[clamp(1.5rem,3.8vw,3.5rem)] leading-none tracking-[-0.035em] text-bg sm:px-8 sm:py-6"
+            className="venom-btn display inline-flex items-center gap-4 px-6 py-5 text-[clamp(1.5rem,3.8vw,3.5rem)] leading-none tracking-[-0.035em] sm:px-8 sm:py-6"
           >
             {profile.email}
             <span aria-hidden className="text-[0.7em]">
