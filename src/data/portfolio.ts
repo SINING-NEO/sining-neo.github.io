@@ -118,9 +118,9 @@ export const featured: Project[] = [
     visual: {
       kind: "image",
       src: "/work/air-draw.webp",
-      alt: "Air Draw 3D: a dark 3D grid scene with a gesture and sensitivity control panel on the left",
-      caption: "drawing scene with gesture guide, sensitivity, draw mode, and colour controls",
-      position: "left center",
+      alt: "Air Draw 3D: cyan 3D strokes drawn in mid-air above a purple grid, with the hand-gesture guide on the left and the live webcam preview below",
+      caption: "strokes drawn in mid-air, with the live webcam preview below",
+      position: "center",
     },
   },
   {
