@@ -117,7 +117,7 @@ export const featured: Project[] = [
     ],
     visual: {
       kind: "image",
-      src: "/work/air-draw.webp",
+      src: "/work/air-draw-3d.webp",
       alt: "Air Draw 3D: cyan 3D strokes drawn in mid-air above a purple grid, with the hand-gesture guide on the left and the live webcam preview below",
       caption: "strokes drawn in mid-air, with the live webcam preview below",
       position: "center",
