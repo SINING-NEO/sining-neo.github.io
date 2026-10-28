@@ -572,7 +572,7 @@ function Contact() {
               ↗
             </span>
           </VenomButton>
-          <div className="mt-6 flex flex-wrap items-center gap-x-7 gap-y-2">
+          <div className="mt-6 flex flex-wrap items-center gap-x-7 gap-y-2 md:mt-12">
             <button type="button" onClick={copy} className="text-[13px] font-semibold underline underline-offset-4">
               {copied ? "copied ✓" : "copy email"}
             </button>

@@ -83,6 +83,11 @@ body {
   .venom-btn:hover {
     filter: brightness(1.25);
   }
+  .venom-btn.venom-live {
+    background: none;
+    box-shadow: none;
+    filter: none;
+  }
 }
 
 .reveal {
