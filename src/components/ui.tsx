@@ -60,8 +60,13 @@ export function Rich({ text }: { text: string }) {
   );
 }
 
-export function Label({ children, className }: { children: ReactNode; className?: string }) {
-  return <h2 className={cx("text-[13px] font-bold tracking-tight lowercase", className)}>{children}</h2>;
+export function Label({ children, className, n }: { children: ReactNode; className?: string; n?: number }) {
+  return (
+    <h2 className={cx("text-[13px] font-bold tracking-tight lowercase", className)}>
+      {n !== undefined && <span className="mr-2 font-medium text-muted tabular-nums">({String(n).padStart(2, "0")})</span>}
+      {children}
+    </h2>
+  );
 }
 
 export function TextLink({ href, children }: { href: string; children: ReactNode }) {

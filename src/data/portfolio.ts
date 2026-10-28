@@ -12,7 +12,7 @@ export const profile = {
   linkedinHandle: "sitt-naingg",
   portfolioV1: "https://sitt-portfoloi.vercel.app",
   /** Drop a square photo at public/me.jpg and set this to "/me.jpg". */
-  photo: "" as string,
+  photo: "/portrait-about.webp" as string,
   availability: "Open to UI/UX internships, junior product design work, and prototype-heavy freelance projects.",
 };
 
@@ -120,7 +120,7 @@ export const featured: Project[] = [
       src: "/work/air-draw-3d-hd.webp",
       alt: "Air Draw 3D: cyan 3D strokes drawn in mid-air above a purple grid, with the hand-gesture guide on the left and the live webcam preview below",
       caption: "strokes drawn in mid-air, with the live webcam preview below",
-      position: "center",
+      position: "64% center",
     },
   },
   {
@@ -227,8 +227,8 @@ export const featured: Project[] = [
       kind: "poster",
       words: ["A04", "Insecure", "Design"],
       caption: "owasp top 10 · scouting report, vulnerability write-up, registration fix",
-      bg: "#0b0b0b",
-      fg: "#d9f99d",
+      bg: "#d9f99d",
+      fg: "#0b0b0b",
     },
   },
 ];

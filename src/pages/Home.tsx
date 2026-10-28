@@ -45,10 +45,31 @@ export default function Home() {
   );
 }
 
+// Which nav item each section belongs to, in page order.
+const navSections: [string, string][] = [
+  ["about", "about"],
+  ["work", "work"],
+  ...featured.map((p): [string, string] => [p.id, "work"]),
+  ["more-work", "work"],
+  ["skills", "skills"],
+  ["ai", "ai"],
+  ["contact", "contact"],
+];
+
 function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState("");
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 8);
+      const line = window.innerHeight * 0.35;
+      let current = "";
+      for (const [id, key] of navSections) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= line) current = key;
+      }
+      setActive(current);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -59,7 +80,7 @@ function Header() {
     { href: "#about", label: "about" },
     { href: "#skills", label: "skills" },
     { href: "#ai", label: "ai" },
-    { href: "#contact", label: "contact" },
+    { href: "#contact", label: "contact", always: true },
   ];
 
   return (
@@ -78,7 +99,12 @@ function Header() {
             <a
               key={l.href}
               href={l.href}
-              className={cx("transition-opacity hover:opacity-60", !l.always && "hidden md:inline")}
+              aria-current={active === l.label ? "location" : undefined}
+              className={cx(
+                "decoration-2 underline-offset-[6px] transition-opacity hover:opacity-60",
+                active === l.label && "underline",
+                !l.always && "hidden md:inline",
+              )}
             >
               {l.label}
             </a>
@@ -117,9 +143,9 @@ function Cover() {
       )}
     >
       <PixelPortrait className="pointer-events-none absolute inset-0 -z-10 h-full w-full" />
-      <div className="flex justify-between text-[13px] font-semibold">
+      <div className="flex flex-col gap-1 text-[13px] font-semibold sm:flex-row sm:justify-between">
         <span>{profile.role}</span>
-        <span className="text-right">
+        <span className="whitespace-nowrap text-muted sm:text-right sm:text-fg">
           {profile.location} — <LocalTime />
         </span>
       </div>
@@ -174,6 +200,9 @@ function About() {
       <div className="grid gap-x-10 gap-y-16 lg:grid-cols-12">
         <div className="lg:col-span-7">
           <Reveal>
+            <Label n={1} className="mb-6">
+              about
+            </Label>
             <p className="display max-w-[17ch] text-[clamp(2.1rem,4vw,3.6rem)] leading-[1.02] font-bold tracking-[-0.03em]">
               {about.statement}
             </p>
@@ -184,7 +213,8 @@ function About() {
               <img
                 src={profile.photo}
                 alt={`Portrait of ${profile.name}`}
-                className="aspect-[4/5] w-full object-cover grayscale"
+                loading="lazy"
+                className="aspect-[4/5] w-full max-w-56 object-cover grayscale"
               />
             ) : (
               <div
@@ -205,7 +235,7 @@ function About() {
 
           <Reveal className="mt-14 grid items-end gap-10 sm:grid-cols-[minmax(0,14rem)_1fr]">
             <div>
-              <Label>contact</Label>
+              <Label>find me</Label>
               <ul className="mt-3 space-y-1.5 text-[13px]">
                 <li>
                   <a href={`mailto:${profile.email}`} className="hover:underline">
@@ -268,7 +298,7 @@ function Index() {
     <section id="work" aria-label="Selected work" className={cx("border-t border-line py-20 lg:py-28", pad)}>
       <div className="grid gap-10 lg:grid-cols-12">
         <div className="lg:col-span-4">
-          <Label>selected work</Label>
+          <Label n={2}>selected work</Label>
           <p className="mt-3 max-w-xs text-[13px] leading-relaxed text-muted">
             Six projects from 2026 — team and solo — each shown as the problem, what I built, and how it turned out.
           </p>
@@ -379,10 +409,11 @@ function ProjectSlide({ project: p, index }: { project: Project; index: number }
         </Reveal>
         <Reveal delay={100} className="lg:col-span-7">
           <Label>contribution</Label>
-          <ul className="mt-3 grid gap-x-8 gap-y-3 text-[13px] leading-relaxed text-muted sm:grid-cols-2">
-            {p.highlights.map((h) => (
-              <li key={h} className="border-t border-line pt-3">
-                {h}
+          <ul className="mt-3 gap-x-8 text-[13px] leading-relaxed text-muted sm:columns-2">
+            {p.highlights.map((h, i) => (
+              <li key={h} className="mb-3 grid break-inside-avoid grid-cols-[1.75rem_1fr] border-t border-line pt-3">
+                <span className="font-semibold text-fg tabular-nums">{num(i)}</span>
+                <span>{h}</span>
               </li>
             ))}
           </ul>
@@ -400,10 +431,10 @@ function ProjectSlide({ project: p, index }: { project: Project; index: number }
 
 function MoreWork() {
   return (
-    <section aria-labelledby="more" className={cx("border-t border-line py-20 lg:py-28", pad)}>
+    <section id="more-work" aria-labelledby="more" className={cx("border-t border-line py-20 lg:py-28", pad)}>
       <div className="mb-12 grid gap-6 lg:grid-cols-12">
         <div className="lg:col-span-4">
-          <Label>
+          <Label n={3}>
             <span id="more">more work</span>
           </Label>
         </div>
@@ -454,7 +485,7 @@ function Skills() {
     <section id="skills" aria-label="Skills" className={cx("border-t border-line py-20 lg:py-28", pad)}>
       <div className="grid gap-10 lg:grid-cols-12">
         <div className="lg:col-span-4">
-          <Label>skills</Label>
+          <Label n={4}>skills</Label>
           <p className="mt-3 max-w-xs text-[13px] leading-relaxed text-muted">
             Everything listed here shows up in at least one project on this page.
           </p>
@@ -483,7 +514,7 @@ function AiSection() {
     <section id="ai" aria-label="AI" className={cx("border-t border-line py-20 lg:py-28", pad)}>
       <div className="grid gap-10 lg:grid-cols-12">
         <div className="lg:col-span-4">
-          <Label>ai</Label>
+          <Label n={5}>ai</Label>
           <p className="mt-3 max-w-xs text-[13px] leading-relaxed text-muted">
             Where AI runs inside my projects, how I build with it, and the models I work with.
           </p>
@@ -565,6 +596,9 @@ function Contact() {
   return (
     <section id="contact" aria-label="Contact" className={cx("border-t border-line py-20 lg:py-28", pad)}>
       <Reveal>
+        <Label n={6} className="mb-6">
+          contact
+        </Label>
         <p className="display text-[clamp(4.5rem,16vw,16rem)]">Let's talk.</p>
       </Reveal>
       <div className="mt-12 grid gap-10 lg:grid-cols-12">
