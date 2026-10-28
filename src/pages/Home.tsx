@@ -12,6 +12,7 @@ import {
   type Visual,
 } from "../data/portfolio";
 import { Label, Reveal, Rich, TextLink, ThemeToggle, cx } from "../components/ui";
+import { PixelPortrait } from "../components/PixelPortrait";
 import { VenomButton } from "../components/VenomButton";
 
 const pad = "px-5 sm:px-8 lg:px-12";
@@ -109,7 +110,13 @@ function LocalTime() {
 
 function Cover() {
   return (
-    <section className={cx("flex min-h-[calc(100svh-3.5rem)] flex-col justify-between py-6", pad)}>
+    <section
+      className={cx(
+        "relative isolate flex min-h-[calc(100svh-3.5rem)] flex-col justify-between overflow-hidden bg-bg py-6",
+        pad,
+      )}
+    >
+      <PixelPortrait className="pointer-events-none absolute inset-0 -z-10 h-full w-full" />
       <div className="flex justify-between text-[13px] font-semibold">
         <span>{profile.role}</span>
         <span className="text-right">
@@ -117,7 +124,7 @@ function Cover() {
         </span>
       </div>
 
-      <Reveal className="mx-auto w-fit py-16">
+      <Reveal className="mx-auto w-fit py-16 text-white mix-blend-difference">
         <h1 className="display text-[clamp(4.5rem,19vw,20rem)]">
           <span className="sr-only">{profile.name} — </span>Portfolio.
         </h1>
