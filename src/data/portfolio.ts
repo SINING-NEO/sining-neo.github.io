@@ -12,7 +12,7 @@ export const profile = {
   linkedinHandle: "sitt-naingg",
   portfolioV1: "https://sitt-portfoloi.vercel.app",
   /** Drop a square photo at public/me.jpg and set this to "/me.jpg". */
-  photo: "/portrait-about.webp" as string,
+  photo: "" as string,
   availability: "Open to UI/UX internships, junior product design work, and prototype-heavy freelance projects.",
 };
 
