@@ -12,6 +12,7 @@ import {
   type Visual,
 } from "../data/portfolio";
 import { Label, Reveal, Rich, TextLink, ThemeToggle, cx } from "../components/ui";
+import { VenomButton } from "../components/VenomButton";
 
 const pad = "px-5 sm:px-8 lg:px-12";
 const num = (i: number) => String(i + 1).padStart(2, "0");
@@ -562,12 +563,15 @@ function Contact() {
       <div className="mt-12 grid gap-10 lg:grid-cols-12">
         <p className="max-w-sm text-[14px] leading-relaxed text-muted lg:col-span-4">{profile.availability}</p>
         <div className="lg:col-span-8">
-          <a
+          <VenomButton
             href={`mailto:${profile.email}`}
-            className="display text-[clamp(1.75rem,4.5vw,4rem)] leading-none tracking-[-0.035em] underline decoration-2 underline-offset-[0.15em] hover:opacity-70"
+            className="display inline-flex items-center gap-4 bg-fg px-6 py-5 text-[clamp(1.5rem,3.8vw,3.5rem)] leading-none tracking-[-0.035em] text-bg sm:px-8 sm:py-6"
           >
             {profile.email}
-          </a>
+            <span aria-hidden className="text-[0.7em]">
+              ↗
+            </span>
+          </VenomButton>
           <div className="mt-6 flex flex-wrap items-center gap-x-7 gap-y-2">
             <button type="button" onClick={copy} className="text-[13px] font-semibold underline underline-offset-4">
               {copied ? "copied ✓" : "copy email"}
