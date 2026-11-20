@@ -4,3 +4,6 @@ dist
 .DS_Store
 records/
 *.tsbuildinfo
+# Keep camera originals local; publish only processed assets.
+public/DSC*.JPG
+public/DSC*.jpg
