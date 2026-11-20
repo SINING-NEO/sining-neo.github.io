@@ -265,11 +265,12 @@ function About() {
             <Label>education</Label>
             <ul className="mt-2">
               <TimelineRow
-                date={["current"]}
+                date={education.years.split(" – ").map((d, i, a) => (i < a.length - 1 ? `${d} –` : d))}
                 title={education.course}
-                lines={["Creative technology & UI/UX", education.school]}
+                lines={["Year 2 · UI/UX specialization", education.school]}
               />
               <TimelineRow date={["2026 –", "2027"]} title="Project INC" lines={[education.school]} />
+              <TimelineRow date={["electives"]} title="Applied Psychology" lines={["Shaped Still Here and humane UX work"]} />
             </ul>
           </div>
           <div>

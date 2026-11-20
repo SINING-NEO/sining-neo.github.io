@@ -2,9 +2,9 @@ export const profile = {
   name: "Sitt Naing",
   role: "Creative technologist",
   location: "Singapore",
-  headline: "I bridge IT, interaction design, and visual craft.",
+  headline: "Year 2 IT student · Project INC · building at the seam of code and craft",
   intro:
-    "Creative technologist studying IT at Singapore Polytechnic. I build usable prototypes at the seam of code, interaction design, and Adobe visual craft — from realtime multiplayer tools to 3D spatial studies and AI agents.",
+    "Year 2 Information Technology student at Singapore Polytechnic (Project INC). Creative technologist who turns ideas into working prototypes — interaction design, Adobe visual craft, and full-stack builds.",
   email: "sittn40@gmail.com",
   github: "https://github.com/SINING-NEO",
   githubHandle: "SINING-NEO",
@@ -14,23 +14,24 @@ export const profile = {
   /** About media: SN monogram when empty; GIF/image path when set. */
   photo: "/crowd-still.gif" as string,
   availability:
-    "Open to creative technology, product design, and prototype-heavy internships or freelance — where code, UX, and visual craft meet.",
+    "Open to internships, collaborations, and prototype-heavy freelance — creative technology, product design, and AI-era IT work where I can learn, contribute, and ship.",
 };
 
 export const about = {
-  statement: "I build at the seam of IT, design, and making things people can actually try.",
+  statement: "Smooth seas don't make skillful sailors — I learn by turning ideas into things people can try.",
   bio: [
-    "I'm **Sitt Naing**, a creative technologist based in Singapore, studying for a Diploma in Information Technology at Singapore Polytechnic.",
-    "Day to day I move between **interaction design, full-stack prototypes, and Adobe tools** — Photoshop and Illustrator for visual craft, then React, TypeScript, and small AI systems to make the idea run.",
-    "I prototype first, ship early, and let real bugs teach me what the design needs. When something doesn't add up, like the cost of my AI video pipeline, **I stop and say so**.",
+    "I'm **Sitt Naing**, a Year 2 Diploma in Information Technology student at Singapore Polytechnic, specializing in **UI/UX** and part of **Project INC (2026–27)**.",
+    "I work as a **creative technologist**: interaction design and Adobe craft (Photoshop, Illustrator) on one side, React, TypeScript, and small AI systems on the other — so ideas leave the sketch and become usable prototypes.",
+    "I'm also taking **Applied Psychology** electives at SP, which shaped projects like Still Here. I thrive on learning in public, solving problems in teams, and stopping when the economics don't work — like pausing my AI Shorts pipeline after measuring real API cost.",
   ],
-  closing: "I like clear flows, honest trade-offs, and interfaces that keep working — on camera, offline, and on a phone.",
+  closing: "Open to new opportunities, connections, and challenges that help me learn, contribute, and achieve meaningful results.",
 };
 
 export const education = {
   school: "Singapore Polytechnic",
   course: "Diploma in Information Technology",
-  focus: "Creative technology & UI/UX · Project INC 2026–27",
+  years: "2025 – 2028",
+  focus: "UI/UX specialization · Project INC 2026–27 · Applied Psychology electives",
 };
 
 export const award = {
@@ -159,13 +160,13 @@ export const featured: Project[] = [
     period: "May – Jun 2026",
     status: "Live",
     lede:
-      "A browser app that **turns a webcam into a 3D pen** — the project I'd imagined since childhood. Pinch or point to paint glowing strokes in space with **no special hardware**. The design challenge was making an **invisible input feel understandable**.",
+      "A browser app that **turns a webcam into a 3D pen** — something I'd imagined since childhood. Pinch or point to paint glowing strokes in space with **no cloud, VR, or extra hardware**. Built after hearing at SP × Autodesk: if you have an idea, turn it into a real project.",
     highlights: [
-      "Real-time hand tracking with MediaPipe, rendered as 3D tube strokes in Three.js and React Three Fiber.",
-      "Designed two gesture modes — pinch-to-draw and point-to-draw — plus colour, brush size, undo, and a live skeleton overlay so users understand what the camera sees.",
+      "MediaPipe hand + face tracking in a real-time Three.js / React Three Fiber scene, with a live skeleton overlay on the camera feed.",
+      "Designed the body-as-interface: look around by turning your head, pause with an open hand, walk with two palms, and draw with pinch or point — plus colour, brush size, and undo.",
       "Debugged real deployment issues across browsers: Edge camera startup, black preview frames, mirrored overlay alignment, WASM paths, and a safer WebGL fallback.",
     ],
-    outcome: "Live on Vercel, hardened through a round of real-browser camera and deploy fixes.",
+    outcome: "Live on Vercel; built and refined in public with Cursor as a pair-programming partner.",
     stack: ["React", "TypeScript", "MediaPipe", "Three.js", "React Three Fiber"],
     links: [
       { label: "Live app", href: "https://air-draw-3d.vercel.app" },
@@ -224,7 +225,7 @@ export const featured: Project[] = [
       "Docker Compose for the local stack.",
     ],
     outcome:
-      "I paused it after measuring the unit economics: one Short could cost a few dollars in video APIs, and views weren't revenue.",
+      "Paused after unit economics: about $1–3+ per Short in video APIs, and views ≠ revenue — automation isn't profit until distribution is solved.",
     stack: ["Node.js", "Express", "PostgreSQL", "Redis", "BullMQ", "Docker"],
     links: [{ label: "Repository", href: "https://github.com/SINING-NEO/automated_video_upload" }],
     visual: {
@@ -330,7 +331,7 @@ export const ai = {
 };
 
 export const resumeSummary =
-  "Creative technologist who bridges IT, interaction design, and Adobe visual craft. Ships working prototypes — from offline clinical screening stations and realtime multiplayer tools to AI agent workflows, Docker/Azure deploy pipelines, and interactive spatial studies. Comfortable from Photoshop and Illustrator through React, TypeScript, Node.js, and PostgreSQL.";
+  "Year 2 IT student at Singapore Polytechnic (UI/UX · Project INC) and creative technologist who bridges interaction design, Adobe craft, and full-stack prototypes. Ships working tools — offline clinical screening stations, realtime multiplayer quizzes, Docker/Azure pipelines, and spatial studies — and practices Applied Psychology electives in product work like Still Here.";
 
 export const resumeBullets: Record<string, string[]> = {
   vsms: [
@@ -346,7 +347,7 @@ export const resumeBullets: Record<string, string[]> = {
     "Built a Dockerised notes stack (React, Express, Redis thumbnail worker, Postgres) with GitHub Actions → GHCR → Azure deploy for ST0529 CA1.",
   ],
   "air-draw": [
-    "Designed and built a webcam drawing app using MediaPipe hand tracking and Three.js / React Three Fiber, with pinch and point gestures, colour, brush size, undo, and a skeleton overlay.",
+    "Designed and built a webcam 3D drawing app with MediaPipe hand + face tracking and Three.js / React Three Fiber — look, pause, walk, and draw gestures with no extra hardware.",
     "Resolved cross-browser camera, overlay-mirroring, WASM, and WebGL issues to ship it live on Vercel.",
   ],
   pruassist: [
@@ -420,8 +421,8 @@ export const sideProjects: SideProject[] = [
     title: "Still Here",
     short: "local-first heartbreak support app with a personalised plan",
     blurb:
-      "A calm, local-first space for getting through heartbreak — educational support, not therapy. A short survey shapes a personal plan across eight psychology-informed approaches, with mood check-ins, a win jar, journaling, breathing, and curated playlists. No accounts, no analytics; everything stays on the device.",
-    stack: ["React", "Vite", "JavaScript", "localStorage"],
+      "Built while taking Applied Psychology electives at SP: a calm, local-first space for heartbreak — educational support, not therapy. A short survey shapes a personal plan across eight research-informed lenses, with a 5-step journey, daily quests, mood check-ins, win jar, journaling, breathing, and curated media. No accounts or analytics; everything stays in localStorage.",
+    stack: ["React", "Vite", "JavaScript", "localStorage", "Applied Psychology"],
     links: [
       { label: "Live", href: "https://no-more-broken.vercel.app" },
       { label: "Code", href: "https://github.com/SINING-NEO/no_more_broken" },
@@ -484,6 +485,7 @@ export const skillGroups: { title: string; skills: string[] }[] = [
       "Gesture design",
       "Responsive & mobile UI",
       "Accessibility",
+      "Applied Psychology (electives)",
       "Case-study writing",
     ],
   },
