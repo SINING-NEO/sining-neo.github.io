@@ -12,6 +12,7 @@ import {
   type Visual,
 } from "../data/portfolio";
 import { Label, Reveal, Rich, TextLink, ThemeToggle, cx } from "../components/ui";
+import { CrowdStill } from "../components/CrowdStill";
 import { PixelPortrait } from "../components/PixelPortrait";
 import { VenomButton } from "../components/VenomButton";
 
@@ -208,14 +209,12 @@ function About() {
             </p>
           </Reveal>
 
-          <Reveal className="mt-16 grid gap-8 sm:grid-cols-[minmax(0,14rem)_1fr]">
+          <div className="mt-16 grid gap-8 sm:grid-cols-[minmax(0,14rem)_1fr]">
+            {/* Keep the GIF outside .reveal — CSS transforms freeze GIF playback on iOS. */}
             {profile.photo ? (
-              <img
-                src={profile.photo}
+              <CrowdStill
                 alt={`${profile.name} standing still in a busy crowd, black-and-white pixel art`}
-                loading="lazy"
-                decoding="async"
-                className="aspect-[4/5] w-full max-w-56 object-cover"
+                className="aspect-[4/5] w-full max-w-56 bg-soft"
               />
             ) : (
               <div
@@ -225,14 +224,14 @@ function About() {
                 SN
               </div>
             )}
-            <div className="max-w-md space-y-3 text-[14px] leading-relaxed text-muted">
+            <Reveal className="max-w-md space-y-3 text-[14px] leading-relaxed text-muted">
               {about.bio.map((b) => (
                 <p key={b}>
                   <Rich text={b} />
                 </p>
               ))}
-            </div>
-          </Reveal>
+            </Reveal>
+          </div>
 
           <Reveal className="mt-14 grid items-end gap-10 sm:grid-cols-[minmax(0,14rem)_1fr]">
             <div>
