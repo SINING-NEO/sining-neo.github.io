@@ -122,57 +122,6 @@ export const featured: Project[] = [
     },
   },
   {
-    id: "fixadule",
-    title: "Fixadule",
-    tagline: "Find a time that works for everyone",
-    role: "Designer & developer",
-    team: "Solo",
-    period: "Nov 2026",
-    status: "Shipped",
-    lede:
-      "A lightweight scheduling tool: **share a link**, friends paint their free times, and **only the host sees the overlap**. Built as a small Cloudflare Workers + D1 app — no accounts for guests.",
-    highlights: [
-      "Designed a host-first overview so guests mark availability without seeing everyone else's schedule.",
-      "Shipped on Cloudflare Workers with D1 migrations and Wrangler for local and remote deploy.",
-    ],
-    outcome: "Live scheduling flow deployed on Cloudflare.",
-    stack: ["Cloudflare Workers", "D1", "Wrangler", "HTML/CSS/JS"],
-    links: [{ label: "Repository", href: "https://github.com/SINING-NEO/fixadule" }],
-    visual: {
-      kind: "poster",
-      words: ["Share", "Paint", "Overlap"],
-      caption: "guests mark free times · host sees the intersection · cloudflare workers + d1",
-      bg: "#0ea5e9",
-      fg: "#082f49",
-    },
-  },
-  {
-    id: "onelastthing",
-    title: "OneLastThing",
-    tagline: "AI agents that notice grind and propose automations",
-    role: "Designer & developer",
-    team: "Solo",
-    period: "Oct 2026",
-    status: "Hackathon MVP",
-    lede:
-      "Hackathon MVP also called **Ai-Gnition**: a productivity surface that **notices repetitive work**, **proposes an automation**, and lets a team of agents **build and run it — with your approval**.",
-    highlights: [
-      "Built Observer → Pattern Hunter → Architect → Guardian → Executor → Reporter agent flow with a React Flow studio.",
-      "Dashboard mines a seeded week of activity into pattern cards, with risk badges, dry-run preview, and a live SSE run log.",
-      "Gemini is opt-in for cost control; the default path uses free deterministic agent fallbacks.",
-    ],
-    outcome: "Demoable MVP: load a week, automate a pattern, approve, and watch the executor log.",
-    stack: ["Next.js", "TypeScript", "Tailwind CSS", "SQLite", "Drizzle", "React Flow", "Gemini"],
-    links: [{ label: "Repository", href: "https://github.com/SINING-NEO/Ai-Gnition" }],
-    visual: {
-      kind: "poster",
-      words: ["Notice", "Propose", "Approve", "Run"],
-      caption: "pattern mining → workflow studio → guardian dry-run → sse executor",
-      bg: "#7c3aed",
-      fg: "#f5f3ff",
-    },
-  },
-  {
     id: "noteboard",
     title: "Noteboard",
     tagline: "Notes app exploring Docker, CI, and Azure deploy",
@@ -199,32 +148,6 @@ export const featured: Project[] = [
       caption: "notes api + thumbnail worker · docker compose · deploy on main",
       bg: "#0369a1",
       fg: "#e0f2fe",
-    },
-  },
-  {
-    id: "corridor",
-    title: "Corridor Extension",
-    tagline: "Interactive 3D massing for a shophouse front",
-    role: "Designer & developer",
-    team: "Solo",
-    period: "Sep 2026",
-    status: "Concept model",
-    lede:
-      "Interactive **3D massing and screen blueprints** for a 10 ft front corridor on a three-level Myanmar shophouse — existing vs proposed, day/night, and plan/elevation/section tabs. A **concept layout model**, not a permit set.",
-    highlights: [
-      "Modelled a confirmed second-floor gallery extension with mirrored clothing bays, relocated signage, and an uncovered terrace above.",
-      "Built an in-browser viewer with Existing / Proposed / Both, Day / Night, and a depth slider (8–12 ft).",
-      "Grounded widths and storey heights from site photos, with still renders for client discussion.",
-    ],
-    outcome: "Browser prototype plus render set used to discuss the corrected stack before engineering.",
-    stack: ["HTML", "CSS", "JavaScript", "3D massing", "Spatial prototyping"],
-    links: [],
-    visual: {
-      kind: "image",
-      src: "/work/corridor.webp",
-      alt: "Isometric concept render of a three-level shophouse with a proposed second-floor corridor gallery",
-      caption: "proposed isometric massing — second-floor gallery, open terrace above",
-      position: "center",
     },
   },
   {
@@ -371,13 +294,8 @@ export const ai = {
   shipped: [
     {
       name: "Google Gemini",
-      use: "Powers optional LLM steps in OneLastThing, and replies in my Telegram auto-reply service with model fallback.",
-      project: "OneLastThing · Telegram Assistants",
-    },
-    {
-      name: "OpenAI API",
-      use: "Streaming reflection companion with crisis detection in Lighthouse.",
-      project: "Lighthouse",
+      use: "Generates replies in my Telegram auto-reply service, with model fallback and logging.",
+      project: "Telegram Assistants",
     },
     {
       name: "Perplexity API",
@@ -424,17 +342,8 @@ export const resumeBullets: Record<string, string[]> = {
     "Designed and built a realtime multiplayer CP quiz with virtual-point betting, host controls, student clients, and a presenter leaderboard.",
     "Locked all scoring in Postgres SECURITY DEFINER functions over Supabase RPC, with Realtime sync and a local demo mode.",
   ],
-  fixadule: [
-    "Built a share-a-link scheduling app where guests paint free times and only the host sees the overlap, on Cloudflare Workers and D1.",
-  ],
-  onelastthing: [
-    "Shipped an Ai-Gnition hackathon MVP where agents mine repetitive work, propose workflows in React Flow, and run them after Guardian approval.",
-  ],
   noteboard: [
     "Built a Dockerised notes stack (React, Express, Redis thumbnail worker, Postgres) with GitHub Actions → GHCR → Azure deploy for ST0529 CA1.",
-  ],
-  corridor: [
-    "Produced an interactive 3D massing model and concept renders for a 10 ft shophouse corridor extension, with existing/proposed and day/night views.",
   ],
   "air-draw": [
     "Designed and built a webcam drawing app using MediaPipe hand tracking and Three.js / React Three Fiber, with pinch and point gestures, colour, brush size, undo, and a skeleton overlay.",
@@ -488,20 +397,24 @@ export type SideProject = {
 
 export const sideProjects: SideProject[] = [
   {
-    title: "Lighthouse",
-    short: "AI emotional companion for check-ins and reflection",
+    title: "Fixadule",
+    short: "share a link, paint free times, host sees the overlap",
     blurb:
-      "A calm Next.js app for daily emotional check-ins, private journaling, mood timelines, and an AI reflection companion with streaming replies and crisis detection. Not therapy — educational support with Supabase RLS so users only see their own data.",
-    stack: ["Next.js", "TypeScript", "Supabase", "OpenAI", "Framer Motion", "Tailwind CSS"],
-    links: [],
+      "A lightweight scheduling tool: share a link, friends paint their free times, and only the host sees the overlap. Built on Cloudflare Workers and D1 — no accounts for guests.",
+    stack: ["Cloudflare Workers", "D1", "Wrangler"],
+    links: [{ label: "Code", href: "https://github.com/SINING-NEO/fixadule" }],
   },
   {
-    title: "AI-gnition Retention MVP",
-    short: "Personalised retention and upsell workflow before human chat",
+    title: "Corridor Extension",
+    short: "interactive 3D massing for a shophouse front corridor",
     blurb:
-      "Prototype that uses fictional purchase data to predict next-product timing, enforce consent and cooldown rules, and queue review-only retention emails before a planned MantaGO handoff. No real customer data is used.",
-    stack: ["Python", "prediction models", "SMTP test utility"],
-    links: [{ label: "Code", href: "https://github.com/SINING-NEO/AI-gnition_v2" }],
+      "Interactive 3D massing and screen blueprints for a 10 ft front corridor on a three-level Myanmar shophouse — existing vs proposed, day/night, and plan/elevation/section tabs. Concept layout model, not a permit set.",
+    stack: ["HTML", "CSS", "JavaScript", "3D massing"],
+    links: [],
+    image: {
+      src: "/work/corridor.webp",
+      alt: "Isometric concept render of a three-level shophouse with a proposed second-floor corridor gallery",
+    },
   },
   {
     title: "Still Here",
