@@ -264,7 +264,11 @@ function About() {
           <div>
             <Label>education</Label>
             <ul className="mt-2">
-              <TimelineRow date={["current"]} title={education.course} lines={["UI/UX focus", education.school]} />
+              <TimelineRow
+                date={["current"]}
+                title={education.course}
+                lines={["Creative technology & UI/UX", education.school]}
+              />
               <TimelineRow date={["2026 –", "2027"]} title="Project INC" lines={[education.school]} />
             </ul>
           </div>
@@ -300,7 +304,8 @@ function Index() {
         <div className="lg:col-span-4">
           <Label n={2}>selected work</Label>
           <p className="mt-3 max-w-xs text-[13px] leading-relaxed text-muted">
-            Six projects from 2026 — team and solo — each shown as the problem, what I built, and how it turned out.
+            {featured.length} projects from 2026 — team and solo — each shown as the problem, what I built, and how it
+            turned out.
           </p>
         </div>
         <ol className="lg:col-span-8">

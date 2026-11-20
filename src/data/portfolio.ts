@@ -1,10 +1,10 @@
 export const profile = {
   name: "Sitt Naing",
-  role: "UI/UX designer & front-end developer",
+  role: "Creative technologist",
   location: "Singapore",
-  headline: "I design by building usable prototypes.",
+  headline: "I bridge IT, interaction design, and visual craft.",
   intro:
-    "Aspiring UI/UX designer studying IT at Singapore Polytechnic. My work sits between interaction design, applied web apps, and small AI pipelines — from webcam hand-tracking in 3D to clinical screening forms used at community events.",
+    "Creative technologist studying IT at Singapore Polytechnic. I build usable prototypes at the seam of code, interaction design, and Adobe visual craft — from realtime multiplayer tools to 3D spatial studies and AI agents.",
   email: "sittn40@gmail.com",
   github: "https://github.com/SINING-NEO",
   githubHandle: "SINING-NEO",
@@ -13,15 +13,16 @@ export const profile = {
   portfolioV1: "https://sitt-portfoloi.vercel.app",
   /** About media: SN monogram when empty; GIF/image path when set. */
   photo: "/crowd-still.gif" as string,
-  availability: "Open to UI/UX internships, junior product design work, and prototype-heavy freelance projects.",
+  availability:
+    "Open to creative technology, product design, and prototype-heavy internships or freelance — where code, UX, and visual craft meet.",
 };
 
 export const about = {
-  statement: "I design by building — prototypes that go from an idea to something you can actually use.",
+  statement: "I build at the seam of IT, design, and making things people can actually try.",
   bio: [
-    "I'm **Sitt Naing**, an aspiring UI/UX designer based in Singapore, studying for a Diploma in Information Technology at Singapore Polytechnic.",
-    "My work sits between **interaction design, applied web apps, and small AI pipelines** — from webcam hand-tracking in 3D to clinical screening forms and conversational insurance flows.",
-    "I prototype first, ship early, and let the real bugs teach me what the design needs. When something doesn't add up, like the cost of my AI video pipeline, **I stop and say so**.",
+    "I'm **Sitt Naing**, a creative technologist based in Singapore, studying for a Diploma in Information Technology at Singapore Polytechnic.",
+    "Day to day I move between **interaction design, full-stack prototypes, and Adobe tools** — Photoshop and Illustrator for visual craft, then React, TypeScript, and small AI systems to make the idea run.",
+    "I prototype first, ship early, and let real bugs teach me what the design needs. When something doesn't add up, like the cost of my AI video pipeline, **I stop and say so**.",
   ],
   closing: "I like clear flows, honest trade-offs, and interfaces that keep working — on camera, offline, and on a phone.",
 };
@@ -29,7 +30,7 @@ export const about = {
 export const education = {
   school: "Singapore Polytechnic",
   course: "Diploma in Information Technology",
-  focus: "UI/UX focus · Project INC 2026–27",
+  focus: "Creative technology & UI/UX · Project INC 2026–27",
 };
 
 export const award = {
@@ -92,6 +93,138 @@ export const featured: Project[] = [
       caption: "four screening stations, one schema-driven form system",
       bg: "#0f5c4d",
       fg: "#e7f5ef",
+    },
+  },
+  {
+    id: "cp-bet",
+    title: "CP BET",
+    tagline: "Live multiplayer CP quiz with virtual-point bets",
+    role: "Designer & developer",
+    team: "Solo",
+    period: "Oct – Nov 2026",
+    status: "Shipped",
+    lede:
+      "A real-time multiplayer competitive-programming quiz where students **bet virtual points** on their answers. Built for live CP events: the host projects the question, students answer from their phones, and the **leaderboard updates live**. Virtual points only — no real money.",
+    highlights: [
+      "Designed host, student, and presenter flows: join by QR or room code, timed rounds, betting panel, and an animated leaderboard.",
+      "All scoring runs in Postgres as atomic, idempotent functions over Supabase RPC — the browser never decides a balance.",
+      "Realtime state via Supabase, with a local demo mode for tab-synced rehearsals and SQL tests against Docker Postgres.",
+    ],
+    outcome: "Playable end-to-end with host controls, student clients, and a projector leaderboard.",
+    stack: ["React", "TypeScript", "Vite", "Supabase", "PostgreSQL", "Framer Motion", "Tailwind CSS"],
+    links: [{ label: "Repository", href: "https://github.com/SINING-NEO/cp-bet" }],
+    visual: {
+      kind: "poster",
+      words: ["Join", "Bet", "Reveal", "Rank"],
+      caption: "virtual points only · scoring locked in postgres · realtime leaderboard",
+      bg: "#111827",
+      fg: "#fbbf24",
+    },
+  },
+  {
+    id: "fixadule",
+    title: "Fixadule",
+    tagline: "Find a time that works for everyone",
+    role: "Designer & developer",
+    team: "Solo",
+    period: "Nov 2026",
+    status: "Shipped",
+    lede:
+      "A lightweight scheduling tool: **share a link**, friends paint their free times, and **only the host sees the overlap**. Built as a small Cloudflare Workers + D1 app — no accounts for guests.",
+    highlights: [
+      "Designed a host-first overview so guests mark availability without seeing everyone else's schedule.",
+      "Shipped on Cloudflare Workers with D1 migrations and Wrangler for local and remote deploy.",
+    ],
+    outcome: "Live scheduling flow deployed on Cloudflare.",
+    stack: ["Cloudflare Workers", "D1", "Wrangler", "HTML/CSS/JS"],
+    links: [{ label: "Repository", href: "https://github.com/SINING-NEO/fixadule" }],
+    visual: {
+      kind: "poster",
+      words: ["Share", "Paint", "Overlap"],
+      caption: "guests mark free times · host sees the intersection · cloudflare workers + d1",
+      bg: "#0ea5e9",
+      fg: "#082f49",
+    },
+  },
+  {
+    id: "onelastthing",
+    title: "OneLastThing",
+    tagline: "AI agents that notice grind and propose automations",
+    role: "Designer & developer",
+    team: "Solo",
+    period: "Oct 2026",
+    status: "Hackathon MVP",
+    lede:
+      "Hackathon MVP also called **Ai-Gnition**: a productivity surface that **notices repetitive work**, **proposes an automation**, and lets a team of agents **build and run it — with your approval**.",
+    highlights: [
+      "Built Observer → Pattern Hunter → Architect → Guardian → Executor → Reporter agent flow with a React Flow studio.",
+      "Dashboard mines a seeded week of activity into pattern cards, with risk badges, dry-run preview, and a live SSE run log.",
+      "Gemini is opt-in for cost control; the default path uses free deterministic agent fallbacks.",
+    ],
+    outcome: "Demoable MVP: load a week, automate a pattern, approve, and watch the executor log.",
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "SQLite", "Drizzle", "React Flow", "Gemini"],
+    links: [{ label: "Repository", href: "https://github.com/SINING-NEO/Ai-Gnition" }],
+    visual: {
+      kind: "poster",
+      words: ["Notice", "Propose", "Approve", "Run"],
+      caption: "pattern mining → workflow studio → guardian dry-run → sse executor",
+      bg: "#7c3aed",
+      fg: "#f5f3ff",
+    },
+  },
+  {
+    id: "noteboard",
+    title: "Noteboard",
+    tagline: "Notes app exploring Docker, CI, and Azure deploy",
+    role: "Full-stack developer",
+    team: "Solo",
+    period: "Oct 2026",
+    status: "Academic · Live",
+    lede:
+      "A study-notes app built for **ST0529 CA1** to learn containers end to end: React front end, Express API, Redis thumbnail worker with sharp, Postgres, and **CI that publishes to GHCR and deploys to Azure**.",
+    highlights: [
+      "Docker Compose stack with web (Vite + nginx), API, worker, and Postgres — secrets via mounted files, not env leaks.",
+      "GitHub Actions CI builds images, publishes to GHCR, and deploys the production compose stack to an Azure VM.",
+      "Worker turns attached images into WebP thumbnails off the request path.",
+    ],
+    outcome: "Live on Azure with automated publish and deploy from main.",
+    stack: ["React", "Vite", "Express", "Postgres", "Redis", "Docker Compose", "GitHub Actions", "Azure", "sharp"],
+    links: [
+      { label: "Live app", href: "http://noteboard-sittnaing.eastasia.cloudapp.azure.com" },
+      { label: "Repository", href: "https://github.com/SINING-NEO/ay2627s2-cicdp-SittNaing" },
+    ],
+    visual: {
+      kind: "poster",
+      words: ["Compose", "CI", "GHCR", "Azure"],
+      caption: "notes api + thumbnail worker · docker compose · deploy on main",
+      bg: "#0369a1",
+      fg: "#e0f2fe",
+    },
+  },
+  {
+    id: "corridor",
+    title: "Corridor Extension",
+    tagline: "Interactive 3D massing for a shophouse front",
+    role: "Designer & developer",
+    team: "Solo",
+    period: "Sep 2026",
+    status: "Concept model",
+    lede:
+      "Interactive **3D massing and screen blueprints** for a 10 ft front corridor on a three-level Myanmar shophouse — existing vs proposed, day/night, and plan/elevation/section tabs. A **concept layout model**, not a permit set.",
+    highlights: [
+      "Modelled a confirmed second-floor gallery extension with mirrored clothing bays, relocated signage, and an uncovered terrace above.",
+      "Built an in-browser viewer with Existing / Proposed / Both, Day / Night, and a depth slider (8–12 ft).",
+      "Grounded widths and storey heights from site photos, with still renders for client discussion.",
+    ],
+    outcome: "Browser prototype plus render set used to discuss the corrected stack before engineering.",
+    stack: ["HTML", "CSS", "JavaScript", "3D massing", "Spatial prototyping"],
+    links: [],
+    visual: {
+      kind: "image",
+      src: "/work/corridor.webp",
+      alt: "Isometric concept render of a three-level shophouse with a proposed second-floor corridor gallery",
+      caption: "proposed isometric massing — second-floor gallery, open terrace above",
+      position: "center",
     },
   },
   {
@@ -236,10 +369,31 @@ export const featured: Project[] = [
 export const ai = {
   statement: "AI is part of how I design, build, and ship — not just a feature I add.",
   shipped: [
-    { name: "Google Gemini", use: "Generates replies in my Telegram auto-reply service, with model fallback and logging.", project: "Telegram Assistants" },
-    { name: "Perplexity API", use: "Writes scripts, hooks, and captions for each Short in the content pipeline.", project: "AI Shorts Pipeline" },
-    { name: "Cursor SDK", use: "Runs one persistent agent per Telegram chat, so follow-ups continue the same conversation.", project: "Telegram Assistants" },
-    { name: "MCP", use: "Optional tool servers that give the bot's agents extra capabilities.", project: "Telegram Assistants" },
+    {
+      name: "Google Gemini",
+      use: "Powers optional LLM steps in OneLastThing, and replies in my Telegram auto-reply service with model fallback.",
+      project: "OneLastThing · Telegram Assistants",
+    },
+    {
+      name: "OpenAI API",
+      use: "Streaming reflection companion with crisis detection in Lighthouse.",
+      project: "Lighthouse",
+    },
+    {
+      name: "Perplexity API",
+      use: "Writes scripts, hooks, and captions for each Short in the content pipeline.",
+      project: "AI Shorts Pipeline",
+    },
+    {
+      name: "Cursor SDK",
+      use: "Runs one persistent agent per Telegram chat, so follow-ups continue the same conversation.",
+      project: "Telegram Assistants",
+    },
+    {
+      name: "MCP",
+      use: "Optional tool servers that give the bot's agents extra capabilities.",
+      project: "Telegram Assistants",
+    },
   ],
   workflow: [
     { step: "Plan", body: "Talk through the problem and the user flow with an agent before writing code." },
@@ -258,13 +412,29 @@ export const ai = {
 };
 
 export const resumeSummary =
-  "Aspiring UI/UX designer and front-end developer who designs by building working prototypes. Shipped a hand-tracking 3D drawing app, a conversational insurance prototype, and offline-first clinical screening stations for a team event-operations platform. Comfortable from interface design through React, TypeScript, Node.js, and PostgreSQL.";
+  "Creative technologist who bridges IT, interaction design, and Adobe visual craft. Ships working prototypes — from offline clinical screening stations and realtime multiplayer tools to AI agent workflows, Docker/Azure deploy pipelines, and interactive spatial studies. Comfortable from Photoshop and Illustrator through React, TypeScript, Node.js, and PostgreSQL.";
 
 export const resumeBullets: Record<string, string[]> = {
   vsms: [
     "Built visual acuity, refraction, colour vision, and eye-health screening stations, then migrated them to editable dynamic field schemas with field-level clinical flag rules.",
     "Delivered QR station check-in, a next-queue display, station-scoped auth, and an installable offline PWA that auto-downloads screening packs with conflict-safe sync.",
     "Wrote PostgreSQL routines for result locking, completeness, and flag auditing; merged 5 pull requests through code review and CI.",
+  ],
+  "cp-bet": [
+    "Designed and built a realtime multiplayer CP quiz with virtual-point betting, host controls, student clients, and a presenter leaderboard.",
+    "Locked all scoring in Postgres SECURITY DEFINER functions over Supabase RPC, with Realtime sync and a local demo mode.",
+  ],
+  fixadule: [
+    "Built a share-a-link scheduling app where guests paint free times and only the host sees the overlap, on Cloudflare Workers and D1.",
+  ],
+  onelastthing: [
+    "Shipped an Ai-Gnition hackathon MVP where agents mine repetitive work, propose workflows in React Flow, and run them after Guardian approval.",
+  ],
+  noteboard: [
+    "Built a Dockerised notes stack (React, Express, Redis thumbnail worker, Postgres) with GitHub Actions → GHCR → Azure deploy for ST0529 CA1.",
+  ],
+  corridor: [
+    "Produced an interactive 3D massing model and concept renders for a 10 ft shophouse corridor extension, with existing/proposed and day/night views.",
   ],
   "air-draw": [
     "Designed and built a webcam drawing app using MediaPipe hand tracking and Three.js / React Three Fiber, with pinch and point gestures, colour, brush size, undo, and a skeleton overlay.",
@@ -287,11 +457,24 @@ export const resumeBullets: Record<string, string[]> = {
 };
 
 export const resumeSkills: { label: string; items: string }[] = [
-  { label: "Design", items: "Interaction design, conversational flows, form design, responsive UI, accessibility, case studies" },
-  { label: "Front-end", items: "React, TypeScript, JavaScript, Next.js, Vite, Tailwind CSS, Three.js, React Three Fiber, MediaPipe, PWA" },
-  { label: "Back-end", items: "Node.js, Express, PostgreSQL, PL/pgSQL, Prisma, Redis, BullMQ, Zod, OpenAPI, Docker Compose" },
-  { label: "AI", items: "Cursor agents & Cursor SDK, MCP, Gemini API, Perplexity API; building with Claude, GPT, Gemini, Grok, and Muse Spark models" },
-  { label: "Tooling", items: "Git, GitHub, CI, Vercel, GitHub Pages, OWASP Top 10" },
+  {
+    label: "Design",
+    items:
+      "Interaction design, visual craft (Photoshop, Illustrator), conversational flows, form design, spatial prototyping, responsive UI, accessibility",
+  },
+  {
+    label: "Front-end",
+    items: "React, TypeScript, JavaScript, Next.js, Vite, Tailwind CSS, Framer Motion, Three.js, React Three Fiber, MediaPipe, PWA",
+  },
+  {
+    label: "Back-end",
+    items: "Node.js, Express, PostgreSQL, Prisma, Supabase, Redis, BullMQ, Cloudflare Workers, D1, Zod, OpenAPI, Docker Compose",
+  },
+  {
+    label: "AI",
+    items: "Cursor agents & Cursor SDK, MCP, Gemini API, OpenAI API, Perplexity API; Claude, GPT, Gemini, Grok, Muse Spark",
+  },
+  { label: "Tooling", items: "Git, GitHub Actions, Azure, Vercel, GitHub Pages, Wrangler, OWASP Top 10" },
 ];
 
 export type SideProject = {
@@ -304,6 +487,22 @@ export type SideProject = {
 };
 
 export const sideProjects: SideProject[] = [
+  {
+    title: "Lighthouse",
+    short: "AI emotional companion for check-ins and reflection",
+    blurb:
+      "A calm Next.js app for daily emotional check-ins, private journaling, mood timelines, and an AI reflection companion with streaming replies and crisis detection. Not therapy — educational support with Supabase RLS so users only see their own data.",
+    stack: ["Next.js", "TypeScript", "Supabase", "OpenAI", "Framer Motion", "Tailwind CSS"],
+    links: [],
+  },
+  {
+    title: "AI-gnition Retention MVP",
+    short: "Personalised retention and upsell workflow before human chat",
+    blurb:
+      "Prototype that uses fictional purchase data to predict next-product timing, enforce consent and cooldown rules, and queue review-only retention emails before a planned MantaGO handoff. No real customer data is used.",
+    stack: ["Python", "prediction models", "SMTP test utility"],
+    links: [{ label: "Code", href: "https://github.com/SINING-NEO/AI-gnition_v2" }],
+  },
   {
     title: "Still Here",
     short: "local-first heartbreak support app with a personalised plan",
@@ -361,36 +560,79 @@ export const sideProjects: SideProject[] = [
 
 export const skillGroups: { title: string; skills: string[] }[] = [
   {
-    title: "Design & UX",
+    title: "Design & craft",
     skills: [
       "Interaction design",
+      "Adobe Photoshop",
+      "Adobe Illustrator",
+      "Visual / brand craft",
       "Conversational flows",
-      "Clinical form design",
+      "Spatial prototyping",
       "Gesture design",
       "Responsive & mobile UI",
       "Accessibility",
-      "Local-first privacy",
       "Case-study writing",
     ],
   },
   {
     title: "Front-end",
-    skills: ["React", "TypeScript", "JavaScript", "Next.js", "Vite", "Tailwind CSS", "PWA & offline"],
+    skills: [
+      "React",
+      "TypeScript",
+      "JavaScript",
+      "Next.js",
+      "Vite",
+      "Tailwind CSS",
+      "Framer Motion",
+      "React Flow",
+      "PWA & offline",
+    ],
   },
   {
     title: "3D & input",
-    skills: ["Three.js", "React Three Fiber", "MediaPipe"],
+    skills: ["Three.js", "React Three Fiber", "MediaPipe", "Interactive massing"],
   },
   {
     title: "Back-end & data",
-    skills: ["Node.js", "Express", "PostgreSQL", "PL/pgSQL", "Prisma", "Redis", "BullMQ", "Zod", "OpenAPI", "Docker Compose"],
+    skills: [
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "Prisma",
+      "Supabase",
+      "SQLite / Drizzle",
+      "Redis",
+      "BullMQ",
+      "Cloudflare Workers",
+      "D1",
+      "Zod",
+      "OpenAPI",
+    ],
   },
   {
     title: "AI & automation",
-    skills: ["Cursor & Cursor SDK", "MCP", "Google Gemini", "Perplexity API", "Telegram Bot API", "YouTube Data API"],
+    skills: [
+      "Cursor & Cursor SDK",
+      "MCP",
+      "Google Gemini",
+      "OpenAI API",
+      "Perplexity API",
+      "Agent workflows",
+      "Telegram Bot API",
+      "YouTube Data API",
+    ],
   },
   {
     title: "Quality & delivery",
-    skills: ["OWASP Top 10", "Code review", "CI", "Offline sync testing", "Vercel", "GitHub Pages"],
+    skills: [
+      "OWASP Top 10",
+      "Docker Compose",
+      "GitHub Actions",
+      "Azure",
+      "Vercel",
+      "GitHub Pages",
+      "Wrangler",
+      "Code review",
+    ],
   },
 ];
