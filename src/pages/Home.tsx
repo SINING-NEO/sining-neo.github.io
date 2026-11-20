@@ -212,9 +212,10 @@ function About() {
             {profile.photo ? (
               <img
                 src={profile.photo}
-                alt={`Portrait of ${profile.name}`}
+                alt={`${profile.name} standing still in a busy crowd, black-and-white pixel art`}
                 loading="lazy"
-                className="aspect-[4/5] w-full max-w-56 object-cover grayscale"
+                decoding="async"
+                className="aspect-[4/5] w-full max-w-56 object-cover"
               />
             ) : (
               <div

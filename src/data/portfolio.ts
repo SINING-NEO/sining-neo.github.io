@@ -11,8 +11,8 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/sitt-naingg",
   linkedinHandle: "sitt-naingg",
   portfolioV1: "https://sitt-portfoloi.vercel.app",
-  /** Drop a square photo at public/me.jpg and set this to "/me.jpg". */
-  photo: "" as string,
+  /** About media: SN monogram when empty; GIF/image path when set. */
+  photo: "/crowd-still.gif" as string,
   availability: "Open to UI/UX internships, junior product design work, and prototype-heavy freelance projects.",
 };
 
